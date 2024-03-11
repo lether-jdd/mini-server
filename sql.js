@@ -1,17 +1,31 @@
 const mysql = require('mysql')
 const connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'dbuser',
-  password: 's3kreee7',
-  database: 'my_db'
+  host: '127.0.0.1',
+  port: 3306,
+  user: 'root',
+  password: '123',
+  database: 'record'
 })
 
-connection.connect()
+function queryDb(req, res){
+  connection.connect(function(err) {
+    if (err) {
+      console.error('error connecting: ' + err.stack);
+      return;
+    }
+  
+    console.log('connected as id ' + connection.threadId);
+  });
 
-connection.query('SELECT 1 + 1 AS solution', (err, rows, fields) => {
-  if (err) throw err
+  connection.query('select * from record.healthCount', (err, rows, fields) => {
+    if (err) throw err
 
-  console.log('The solution is: ', rows[0].solution)
-})
+    console.log('The solution is: ', rows[0].solution)
+    res.send(rows)
+  })
 
-connection.end()
+  connection.end()
+}
+
+module.exports = queryDb
+
