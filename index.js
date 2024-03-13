@@ -1,5 +1,6 @@
 const express = require('express')
 const queryDb  = require('./sql')
+const axios = require('axios')
 
 const app = express()
 
@@ -26,6 +27,20 @@ app.get('/re', (req, res)=>{
   }
   // 
   
+})
+app.get('/get/openid',(req, res)=>{
+  axios({
+    method: 'get',
+    url:'https://api.weixin.qq.com/sns/jscode2session',
+    params: {
+      appid: req.params.appid,
+      secret: req.params.secret,
+      js_code: req.params.js_code,
+      grant_type: 'authorization_code'
+    }
+  }).then(result => {
+    res.send(result)
+  })
 })
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
