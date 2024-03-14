@@ -15,7 +15,7 @@ const countField = 'count';
 function queryDb(req, res){
   connection.connect(function(err) {
     if (err) {
-      logger.error('error connecting: ' + err.stack)
+      logger.info('error connecting: ' + err.stack)
       return;
     }
   
@@ -24,7 +24,7 @@ function queryDb(req, res){
 
   connection.query('select * from  SPORT_RECORD.record', (err, rows, fields) => {
     if (err) {
-      logger.error('error connecting: ' + err.stack)
+      logger.info('error connecting: ' + err.stack)
       return;
     }
     logger.info('The solution is: ', rows[0].solution)
@@ -39,7 +39,7 @@ function insertRecord(req, res){
   var sql = "SELECT * FROM `SPORT_RECORD.record` WHERE `openid` = ?";
   connection.query(sql, [req.query.openid], function (error, results, fields) {
     if (err) {
-      logger.error('error connecting: ' + err.stack)
+      logger.info('error connecting: ' + err.stack)
       return;
     }
     if (results.length > 0) {
@@ -49,7 +49,7 @@ function insertRecord(req, res){
       LIMIT 1`;
       connection.query(sql_update, [openid], function (error, results, fields) {
         if (error) {
-          logger.error('error connecting: ' + errors.stack)
+          logger.info('error connecting: ' + errors.stack)
           return;
         }
         res.send('success');
@@ -58,7 +58,7 @@ function insertRecord(req, res){
       var sql_insert = "INSERT INTO `SPORT_RECORD.record` (`openid`, `count`) VALUES (?, ?)";
       connection.query(sql_insert, [openid, 1], function (error, results, fields) {
         if (err) {
-          logger.error('error connecting: ' + err.stack)
+          logger.info('error connecting: ' + err.stack)
           return;
         }
         res.send('success');
