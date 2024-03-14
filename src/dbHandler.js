@@ -22,12 +22,12 @@ function queryDb(req, res){
     logger.info('connected as id ' + connection.threadId);
   });
 
-  connection.query('select * from  SPORT_RECORD.record', (err, rows, fields) => {
+  connection.query('select * from  SPORT_RECORD.record;', (err, rows, fields) => {
     if (err) {
       logger.info('error connecting: ' + err.stack)
       return;
     }
-    logger.info('The solution is: ', rows[0].solution)
+    logger.info('The solution is: ', rows)
     res.send(rows)
   })
 
@@ -36,7 +36,7 @@ function queryDb(req, res){
 
 function insertRecord(req, res){
   // 要插入的数据
-  var sql = "SELECT * FROM `SPORT_RECORD.record` WHERE `openid` = ?";
+  var sql = "SELECT * FROM `SPORT_RECORD.record` WHERE `openid` = ?;";
   connection.query(sql, [req.query.openid], function (error, results, fields) {
     if (err) {
       logger.info('error connecting: ' + err.stack)
@@ -55,7 +55,7 @@ function insertRecord(req, res){
         res.send('success');
       });
     } else {
-      var sql_insert = "INSERT INTO `SPORT_RECORD.record` (`openid`, `count`) VALUES (?, ?)";
+      var sql_insert = "INSERT INTO `SPORT_RECORD.record` (`openid`, `count`) VALUES (?, ?);";
       connection.query(sql_insert, [openid, 1], function (error, results, fields) {
         if (err) {
           logger.info('error connecting: ' + err.stack)
