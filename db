@@ -1,0 +1,10 @@
+ALTER USER 'root'@'localhost' IDENTIFIED BY '123';
+
+CREATE DATABASE SPORT_RECORD; 
+CREATE TABLE record (
+  openid VARCHAR(50) NOT NULL,
+  count INT NOT NULL,
+  PRIMARY KEY (openid)
+);
+
+
