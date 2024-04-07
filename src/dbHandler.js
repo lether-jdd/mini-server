@@ -9,7 +9,7 @@ const connection = mysql.createConnection({
   database: 'SPORT_RECORD'
 })
 
-const tableName = "SPORT_RECORD.record"
+const tableName = "record"
 const countField = 'count';
 
 function queryDb(req, res){
@@ -31,15 +31,16 @@ function queryDb(req, res){
     res.send(rows)
   })
 
-  connection.end()
+  // connection.end()
 }
 
 function insertRecord(req, res){
   // 要插入的数据
-  var sql = "SELECT * FROM `SPORT_RECORD.record` WHERE `openid` = ?;";
+  var sql = "SELECT * FROM `record` WHERE `openid` = ?;";
+  var openid = req.query.openid
   connection.query(sql, [req.query.openid], function (error, results, fields) {
-    if (err) {
-      logger.info('error connecting: ' + err.stack)
+    if (error) {
+      logger.info('error connecting2: ' + error.stack)
       return;
     }
     if (results.length > 0) {
@@ -49,23 +50,25 @@ function insertRecord(req, res){
       LIMIT 1`;
       connection.query(sql_update, [openid], function (error, results, fields) {
         if (error) {
-          logger.info('error connecting: ' + errors.stack)
+          logger.info('error connecting3: ' + errors.stack)
           return;
         }
+        // connection.end()
         res.send('success');
       });
     } else {
-      var sql_insert = "INSERT INTO `SPORT_RECORD.record` (`openid`, `count`) VALUES (?, ?);";
+      var sql_insert = "INSERT INTO `record` (`openid`, `count`) VALUES (?, ?);";
       connection.query(sql_insert, [openid, 1], function (error, results, fields) {
-        if (err) {
-          logger.info('error connecting: ' + err.stack)
+        if (error) {
+          logger.info('error connecting1: ' + error.stack)
           return;
         }
+        // connection.end()
         res.send('success');
       });
     }
   });
-  connection.end()
+ 
 }
 module.exports = {
   queryDb,
